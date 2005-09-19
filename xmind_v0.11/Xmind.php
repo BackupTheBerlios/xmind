@@ -5,11 +5,10 @@
  /*
 
  Xmind project (parse core)
- Auteur : Thomas Favennec
+ Auteur : Thomas Favennec and contributors
  version  0.1.0 beta
  support www.redsofa.net
- darladirladata
- tsoin tsoin
+
 
  This file is part of Xmind project.
 
