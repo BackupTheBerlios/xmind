@@ -1,0 +1,174 @@
+
+ ** Xmind actionScript **
+
+ * requiert XmindActionScript.php
+
+ Les fonctions suivantent permetent d'interagir dynamiquement avec les objets graphiques Xmind
+ Elles peuvent être utilisée dans un script php appellé par les évènements 
+ Onchange, Onclic et Onblur des différents objets.
+
+
+ **
+
+ void XmindSetPath(file path)
+ Situe l'emlacement du répertoire Xmind par rapport au script en cours
+
+ void XmindBeginAction()
+ Démarre un procéssus XmindActionScript
+
+ void XmindEndAction()
+ Termine et execute le processus XmindActionScript
+
+
+
+**  Basic actions
+
+
+ void XmindActionScript XmindAlert(string msg)
+ Affiche un message msg à l'écran
+
+ void XmindUrlChange(string url)
+ Change l'url de la page principale
+
+ void XmindTimeoutStart(string url, int time)
+ Créé un processus pèriodique de pèriode time secondes
+
+ void XmindTimeoutStop()
+ Stop le processus pèriodique en cours
+
+
+ void XmindIteration(int X)
+ void XmindIteration(void)
+ Vide le buffer de sortie vers le navigateur et attend éventuellement X secondes.
+ Les itérations ont directement pour effet d'exécuter toutes fonctions ActionScript précedent l'itération.
+ cela peut être trés pratique avec une ProgressBar.
+
+
+
+ ** Widget actions
+
+
+ void XmindNotebookSetPage(string name, int page);
+
+
+
+ void XmindLabelSetText(string name, string text)
+ change le texte d'un label
+
+
+
+ void XmindButtonSetLabel(string name, string text)
+ change le texte d'un bouton
+
+ void XmindButtonSetImage(string name, string image)
+ change l'image d'un bouton
+
+ void XmindButtonSetActive(string name, bool active)
+ Active ou désactive un bouton
+
+
+
+ void XmindEditableSetValue(string name, string value)
+ Change la valeur d'un objet editable (entry, text et spin)
+ pour le spin il estconseillé d'utiliser XmindSpinSetValue 
+
+ void XmindEditableSetActive(string name, bool active)
+ active ou désactive un objet editable
+
+
+
+ void XmindSpinSetValue(string name, string value)
+ Change la valeur d'un objet spin
+ value doit être numérique et ne sera pas vérifiée pour correspondre a min/max
+
+
+
+ void XmindRadioSetValue(string name, string value)
+ Change l'état d'un radiobutton
+ value doit exister dans la source Xmind ( exemple : <radio name="...">value</radio> )
+
+ void XmindRadioSetActive(string name, bool active)
+ Active ou désactive un radiobutton
+
+
+
+ void XmindCheckBoxSetState(string name, bool value)
+ Change l'état d'une case à cocher
+
+ void XmindCheckBoxSetActive(string name, bool active)
+ active ou désactive une case à cocher
+
+
+
+ void XmindToggleSetState(string name, bool value)
+ Change l'état d'un toggle
+
+ void XmindToggleSetLabel(string name, string text)
+ change le texte d'un toggle
+
+ void XmindToggleSetActive(string name, bool active)
+ active ou désactive un toggle
+
+
+
+ void XmindProgressBarSetValue(sting name, int value);
+ change la progression d'une progressBar
+ value est en % (de 0 à 100)
+
+
+
+ void XmindImageSetSource(string name, string source)
+ Change la source d'une image
+
+ void XmindImageSetSize(string name, int width, int height)
+ Change la taille d'une images
+
+
+
+ void XmindClistAppend(string name, array table)
+ void XmindClistAppend(string name, string x,y,...)
+ Ajoute une ligne dans une clist
+
+ void xmindClistClear(string name)
+ Efface une clist
+
+
+
+ ** SVG drawingarea actions (IE only !)
+
+ void XmindDrawSetSource(string drawingarea, string file)
+ charge le fichier svg file dans le drawingarea
+
+
+ void XmindDrawRectangle(string drawingarea, int x, int y, int width, int height, string style)
+ Trace un rectangle dans un drawingarea
+ style est au format svg classique
+
+
+ void XmindDrawLine(string drawingarea, int x1, int y1, int x2, int y2, string style)
+ Trace une ligne dans un drawingarea
+ style est au format svg classique
+
+
+ void XmindDrawCircle(string drawingarea, int x, int y, int r, string style)
+ Trace un cercle dans un drawingarea
+ style est au format svg classique
+
+
+ void XmindDrawPolygon(string drawingarea, array points, string style)
+ Trace un polygone dans un drawingarea
+ style est au format svg classique
+
+
+ void XmindDrawText(string drawingarea, int x, int y, string text, string style)
+ Trace du texte dans un drawingarea
+ style est au format svg classique
+
+
+ void XmindDrawClear(string drawingarea)
+ Efface un drawingarea
+
+
+ **
+
+

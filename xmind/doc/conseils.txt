@@ -1,0 +1,16 @@
+ 
+- mon script actionscript provoque une erreur Javascript
+  Vérifiez le en entrant directement son adresse dans le navigateur
+
+
+- Lorsque je change de thèmes, le thème d'avant est encore en parti affiché
+  Cela est normalement du au cache du navigateur.
+  Utilisez les fonctions suivantes avant d'interpréter la source Xmind :
+
+  header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+  header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+  header("Cache-Control: no-store, no-cache, must-revalidate");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  header("Pragma: no-cache"); 
+
+- Utilisez la fonction XmindSetPath si Xmind ne se trouve pas dans ./Xmind/
