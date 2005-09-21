@@ -1,0 +1,97 @@
+
+ ** Xmind XML language **
+ Balises standard utilisée pour générer des objets graphique Xmind
+
+
+ **
+
+ <xmind [ theme="nom du thème" title="titre de la page" marge="" onLoad="" ]></xmind>
+
+ <layer x="" y="" width="" height="" z="" align="" valign=""> </layer>
+
+ <frame [ title="" talign="" height="" width="" align="center ou right ou left" valign="middle ou top ou bottom" marge="" ]> </window>
+
+ <notebook titles="titre1, titre2 ..." [ pageon="N° de page activée"  width="" height="" ]>
+ <page [ marge="" align"" valign="" ]> 
+ ...
+ </page>
+ ...
+ </notebook>
+
+ <tbox [ height="" width="" align="center ou right ou left" valign="middle ou top ou bottom" span="espace entre les celules" ]>
+  <tr>
+    <td [ height="" width="" colspan="" rowspan="" align="center ou right ou left" valign="middle ou top ou bottom" ]>
+    </td>
+  </tr>
+ </tbox>
+
+
+ **
+
+ <script> ... javascript ... </script>
+ 
+
+ **
+
+ <label [ name="" style="" ]>texte du bouton></label>
+
+ <entry [ name="" type="text ou password" active="0" width="" onchange="event" onblur="event" ]>valeur par défault</entry>
+
+ <text  [ name="" active="0" width="" height="" onchange="event" onblur="event" ]>text par défaut</text>
+
+ <hidden [ name="" ] >valeur par défault</hidden>
+
+ <button  [ name="" image="path" active="0" onclick="event" value="contenu a passer dans le formulaire" width="" ]>texte du bouton</button>
+
+ <checkbox value="0 ou 1 (0 par défault)" [ name="" active="0" onclick="event" ] />
+
+ <radio name="nom" value="0 ou 1" [ active="0" onclick="event" ]>valeure attribuée</radio>
+ <radio name="nom" value="0 ou 1" [ onclick="event" ]>autre valeure attribuée</radio>
+ ...
+
+ <toggle value="0 ou 1 (0 par défault)" [ name="" active="0" onclick="event" ] >texte du toggle</toggle>
+
+ <spin [ name="" active="0" width="" min="minimum" max="maximum" step="pas du spin" onchange="event" onblur="event" ]>valeur par défault</spin>
+
+ <progressbar [ name="" width=""  value="de 0 à 100%"] />
+
+ <clist columns="nb de colonnes" [ name="" active="0" titles="titre_col1, titre_col2, ..." cwidth="width_col1, ..." calign="align_col1, ..." width="" height="">
+ <option>text_colone1, text_colone2, ...</option>
+ <...
+ </clist>
+
+ <image src="" [ width="" height="" ] /> 
+
+ <drawingarea [ name="" width="" height="" src="source.svg" ] />
+  SRC est une source svg contenant au moins un élément <g id="content"></g>
+  les modifications Xmind actionscript n'étant effective que sur ce groupe.
+
+ **
+
+
+
+
+ ** events
+
+ ex: 
+ 
+ onclick="document.php"
+ execute le document.php comme un script Xmind actionScript 
+ 
+
+ onclick="link:document.php"
+ va a la page document.php
+
+ onclick="submit:document.php"
+ valid le formulaire en cours vers document.php
+
+ onclick="javascript:fonctionJavascript()"
+ Execute la fonction fontionJavascript()
+
+
+
+ **
+
+
+ Remarque : Le fait de faire " précédent " dans le navigateur remets les valeurs des objets par défault 
+ contrairement à un formulaire html classique
