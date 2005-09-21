@@ -1,0 +1,62 @@
+
+ ** Introduction à Xmind **
+
+
+ Qu'est ce que Xmind ?
+ Xmind est une technologie permettant de dévellopper de façon rapide et pratique des applications Web dynamiques.
+
+
+ Qu'apporte Xmind par rapport aux standards tels que Xul ?
+ Dévellopé en php, Xmind peu être facilement intégré et utilisé et ne nécéssite aucune connaisance en javascript.
+ Xmind permet à un script php d'interagir dynamiquement avec les objets graphiques présent sur une page Web,
+ ce type d'interaction étant directement intégré dans le language Xmind.
+ La compatibilité d'Xmind avec Internet explorer et mozilla (gecko) est garantie.
+
+
+ Comment fonctionne Xmind ?
+ la technologie Xmind est séparée en 3 parties :
+ - Le langage Xmind (XML) permettant l'utilisation des objets graphiques standarts ( Entry, checkbox, button ...)
+ - La librairie Xmind.php incluant les fonctions php d'interpretation XML et de pré-modification (DOM)
+ - La librairie XmindAction.php incluant les fonction php de réactions dynamiques (ActionScript)
+
+ Voici le fonctionnement type d'une application Xmind :
+
+ source Xmind (XML)
+    |
+    |-> lecture, éventuelle modification (DOM)
+                   |
+                   |-> [ Affichage des widgets Xminds ] --- Action de l'utilisateur sur un objets
+                   |                                                                         |
+                   |<- Réaction sur l'interface <-|                                          |
+                                                  |<-  appel du script php (ActionScript)  <-|
+
+
+ Xmind est-il personnalisable ?
+ Oui, Xmind possède son propre système de thèmes permettant de réaliser des interfaces personnalisées.
+
+
+
+ Xmind est-il intuitif ?
+ Vous pouvez en juger par vous même avec l'exemple ci-dessous :
+
+
+ <Xmind>
+  <tbox>
+   <tr>
+     <td>
+       <label name="label1">Votre recherche :</label>
+     </td>
+     <td>
+       <entry name="entry1"></entry>
+     </td>
+   </tr>
+   <tr>
+     <td>
+       <button name="buton1" onclick="search.php">go!</button>
+     </td>
+   </tr>
+  </tbox> 
+ </Xmind> 
+
+
+  
