@@ -6,7 +6,7 @@
 
  Xmind project (parse core)
  Auteur : Thomas Favennec
- version  0.1.2 beta
+ version  0.1.2b beta
  support www.redsofa.net
 
  This file is part of Xmind project.
