@@ -27,18 +27,28 @@ function SetDefaultValues()
 function activeScript(action)
 {
  var tab=action.split(":");
+ tab[0]=tab[0].toLowerCase();
  if(!tab[1])
  {
   document.forms[0].action=tab[0];
   document.forms[0].target="Xaction";
   document.forms[0].submit();
- } else if(tab[0].toLowerCase()=="submit")
+ }
+ else if(tab[0]=="code")
+ {
+  document.forms[0].action=path+"Xmind/Xincluder.php?f="+tab[1];
+  document.forms[0].target="Xaction";
+  document.forms[0].submit();
+ }
+ else if(tab[0]=="submit")
  {
   document.forms[0].action=tab[1];
   document.forms[0].target='';
   document.forms[0].submit();
- } else if(tab[0].toLowerCase()=="javascript") eval(tab[1]);
- else if(tab[0].toLowerCase()=="link") window.location=tab[1];
+ }
+ else if(tab[0]=="javascript") eval(tab[1]);
+ else if(tab[0]=="link") window.location=tab[1];
+
 
 }
 

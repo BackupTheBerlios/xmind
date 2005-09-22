@@ -6,7 +6,7 @@
 
  Xmind project (parse core)
  Auteur : Thomas Favennec
- version  0.1.2b beta
+ version  0.1.2c alpha
  support www.redsofa.net
 
  This file is part of Xmind project.
@@ -113,7 +113,7 @@ function XMLParseDebutElement($parser, $name, $attrs)
   if(!file_exists($Xpath.'Xmind/themes/'.$Xtheme)) die('Xmind error : le theme spécifié est introuvale !');
   if($Xintegration!='plain') $Xstring.='<html><head><title>'.$Xoptions[TITLE].'</title></head><body leftmargin="'.$Xoptions[MARGE].'" topmargin="'.$Xoptions[MARGE].'" class="frame">';
   if($Xn[XMIND]==1) $Xstring.='<script language="Javascript">var path="'.$Xpath.'"; var theme="'.$Xtheme.'"; '.$Xoption[ONLOAD].'</script> <script language="Javascript" src="'.$Xpath.'Xmind/Xmind.js"></script><style type="text/css">'.XmindStyle($Xpath,$Xtheme).'</style>
-  <div style="z-index: 0; position: absolute; visibility: hidden; left: 500px"><iframe name="Xaction" id="Xaction" height="100" width="100" style="display:none;"></iframe></div>
+  <div style="z-index: 0; position: absolute; visibility: visible; left: 500px"><iframe name="Xaction" id="Xaction" height="100" width="100" style="display:true;"></iframe></div>
   <form method="POST" TARGET=""><input type="hidden" name="Xtheme" value="'.$Xtheme.'"><input type="hidden" name="Xpath" value="'.$Xpath.'">';
  }
  if($name=='SCRIPT') $Xstring.='<script language="javascript">';
@@ -195,10 +195,7 @@ function XMLParseDebutElement($parser, $name, $attrs)
 
  }
 
-
-
-
-  
+ if($name=='CODE') $Xtemp[CODE]=$Xoptions[NAME];
 }
 
 
@@ -218,7 +215,7 @@ function XMLparseHandler($parser, $data)
 function XMLparseFinElement($parser, $name)
 {
  global $Xstring, $Xpath, $Xoptions, $Xtheme, $Xlasthandler, $defaultVars, $Xlasttag, $XlastName,
- $Xtemp, $Xn, $Xintegration, $Yb;
+ $Xtemp, $Xn, $Xintegration, $Yb, $Xcode;
 
  if($name=='SCRIPT') $Xstring.=$Xlasthandler.'</script>';
  if($name=='TBOX')$Xstring.='</table>';
@@ -301,6 +298,13 @@ function XMLparseFinElement($parser, $name)
     $Xstring.='</tr>';
    }
 
+ }
+
+ if($name=='CODE') if ($Xtemp[CODE])
+ {
+   session_start();
+   session_register('Xcode');
+   $Xcode[$Xtemp[CODE]]=$Xlasthandler;
  }
 
  if($name=='XMIND')
