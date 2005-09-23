@@ -6,7 +6,7 @@
 
  Xmind project (parse core)
  Auteur : Thomas Favennec
- version  0.1.2c alpha
+ version  0.1.2d alpha
  support www.redsofa.net
 
  This file is part of Xmind project.
@@ -85,7 +85,8 @@
    $string=str_replace("\n", '', $string);
    
    $xml_parser = xml_parser_create();
-   xml_set_character_data_handler ( $xml_parser, "XMLparseHandler");
+   xml_set_character_data_handler($xml_parser, "XMLparseHandler");
+   //xml_set_processing_instruction_handler($xml_parser, "XMLparseNdata");
    xml_set_element_handler($xml_parser, "XMLparseDebutElement", "XMLparseFinElement");
    if (!xml_parse($xml_parser, $string)) die(sprintf("Xmind XML error : %s à la ligne %d", xml_error_string(xml_get_error_code($xml_parser)), xml_get_current_line_number($xml_parser) )) ;
    xml_parser_free($xml_parser);
@@ -103,6 +104,7 @@ function XMLParseDebutElement($parser, $name, $attrs)
 
  $Xoptions=array();
  if(sizeof($attrs)) while (list($k, $v) = each($attrs)) $Xoptions[$k]=$v;
+ $Xlasttag=$name;
 
  if($name=='XMIND')
  {
@@ -113,10 +115,11 @@ function XMLParseDebutElement($parser, $name, $attrs)
   if(!file_exists($Xpath.'Xmind/themes/'.$Xtheme)) die('Xmind error : le theme spécifié est introuvale !');
   if($Xintegration!='plain') $Xstring.='<html><head><title>'.$Xoptions[TITLE].'</title></head><body leftmargin="'.$Xoptions[MARGE].'" topmargin="'.$Xoptions[MARGE].'" class="frame">';
   if($Xn[XMIND]==1) $Xstring.='<script language="Javascript">var path="'.$Xpath.'"; var theme="'.$Xtheme.'"; '.$Xoption[ONLOAD].'</script> <script language="Javascript" src="'.$Xpath.'Xmind/Xmind.js"></script><style type="text/css">'.XmindStyle($Xpath,$Xtheme).'</style>
-  <div style="z-index: 0; position: absolute; visibility: visible; left: 500px"><iframe name="Xaction" id="Xaction" height="100" width="100" style="display:true;"></iframe></div>
+  <div style="z-index: 0; position: absolute; visibility: hidden; left: 500px"><iframe name="Xaction" id="Xaction" height="100" width="100" style="display:none;"></iframe></div>
   <form method="POST" TARGET=""><input type="hidden" name="Xtheme" value="'.$Xtheme.'"><input type="hidden" name="Xpath" value="'.$Xpath.'">';
  }
  if($name=='SCRIPT') $Xstring.='<script language="javascript">';
+ if($name=='CODE') $Xtemp[CODE]=$Xoptions[NAME];
  if($name=='TBOX')
  {
    if(!$Xoptions[SPAN]) $Xoptions[SPAN]=1;
@@ -195,7 +198,7 @@ function XMLParseDebutElement($parser, $name, $attrs)
 
  }
 
- if($name=='CODE') $Xtemp[CODE]=$Xoptions[NAME];
+
 }
 
 
@@ -204,9 +207,9 @@ function XMLParseDebutElement($parser, $name, $attrs)
 // utilisé par Xmindparse
 function XMLparseHandler($parser, $data)
 {
- global $Xlasthandler;
-
- $Xlasthandler=trim($data);
+ global $Xlasthandler,$Xlasttag;
+ if($Xlasttag=='CODE'||$Xlasttag=='SCRIPT') $Xlasthandler.=$data;
+ else $Xlasthandler=trim($data);
 }
 
 
@@ -218,6 +221,12 @@ function XMLparseFinElement($parser, $name)
  $Xtemp, $Xn, $Xintegration, $Yb, $Xcode;
 
  if($name=='SCRIPT') $Xstring.=$Xlasthandler.'</script>';
+ if($name=='CODE') if ($Xtemp[CODE])
+ {
+   session_start();
+   session_register('Xcode');
+   $Xcode[$Xtemp[CODE]]=$Xlasthandler;
+ }
  if($name=='TBOX')$Xstring.='</table>';
  if($name=='TR')$Xstring.='</tr>';
  if($name=='TD')$Xstring.='</td>';
@@ -300,13 +309,6 @@ function XMLparseFinElement($parser, $name)
 
  }
 
- if($name=='CODE') if ($Xtemp[CODE])
- {
-   session_start();
-   session_register('Xcode');
-   $Xcode[$Xtemp[CODE]]=$Xlasthandler;
- }
-
  if($name=='XMIND')
  {
   if($Xn[XMIND]==1)
@@ -319,7 +321,7 @@ function XMLparseFinElement($parser, $name)
   if($Xintegration!='plain') $Xstring.='</body></html>';
  }
 
-
+ $Xlasttag='';
 }
 
 

@@ -28,7 +28,7 @@
   if($Xcode[$f]) eval($Xcode[$f]);
   else
   {
-   echo 'alert("Xmind error : Aucune fonction ['.$f.'] ne semble définie.\nVérifiez que <code name=\"'.$f.'\" existe et que les sessions PHP sont activées.");';
+   echo 'alert("Xmind error : Aucune fonction [',$f,'] ne semble définie.\nVérifiez que <code name=\"',$f,'\" existe et que les sessions PHP sont activées.");';
   }
   XmindEndAction();
   
