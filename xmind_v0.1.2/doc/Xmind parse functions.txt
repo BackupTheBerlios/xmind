@@ -1,5 +1,6 @@
 
  ** Xmind parse functions **
+ Pour la documentation détaillée, veuillez consulter http://xmind.redsofa.net/
 
  * requiert Xmind.php
 

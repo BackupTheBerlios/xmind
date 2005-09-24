@@ -1,5 +1,6 @@
 
  ** Xmind DOM functions **
+ Pour la documentation détaillée, veuillez consulter http://xmind.redsofa.net/
 
  * requiert XmindDom.php
 

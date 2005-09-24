@@ -1,15 +1,28 @@
 
  ** Xmind XML language **
  Balises standard utilisée pour générer des objets graphique Xmind
-
+ Pour la documentation détaillée, veuillez consulter http://xmind.redsofa.net/
 
  **
 
  <xmind [ theme="nom du thème" title="titre de la page" marge="" onLoad="" ]></xmind>
 
+
+ <vbox  [ height="" width="" align="center ou right ou left" valign="middle ou top ou bottom" span="espace entre les celules" ] >
+ ...
+ </vbox>
+
+
+ <hbox  [ height="" width="" align="center ou right ou left" valign="middle ou top ou bottom" span="espace entre les celules" ] >
+ ...
+ </hbox>
+
+
  <layer x="" y="" width="" height="" z="" align="" valign=""> </layer>
 
+
  <frame [ title="" talign="" height="" width="" align="center ou right ou left" valign="middle ou top ou bottom" marge="" ]> </window>
+
 
  <notebook titles="titre1, titre2 ..." [ pageon="N° de page activée"  width="" height="" ]>
  <page [ marge="" align"" valign="" ]> 
@@ -17,6 +30,7 @@
  </page>
  ...
  </notebook>
+
 
  <tbox [ height="" width="" align="center ou right ou left" valign="middle ou top ou bottom" span="espace entre les celules" ]>
   <tr>
@@ -28,7 +42,9 @@
 
  **
 
- <script> ... javascript ... </script>
+ <script> <![CDATA[ ... javascript ...  ]]> </script>
+
+ <code> <![CDATA[  ... php ... ]]> </code>
  
 
  **
@@ -87,6 +103,9 @@
 
  onclick="javascript:fonctionJavascript()"
  Execute la fonction fontionJavascript()
+
+ onclick="code:test"
+ Execute la fonction php définie par <code name="test"> ... </code>
 
 
 
