@@ -107,8 +107,7 @@ td.No{font-size: 9pt; color: #BBAFA4;}
 .progress2b{width: 5px; background-image:url('progress2b.png');}
 
 
-.clist
-{
+.clist{
 background-color: #FFFFFF;
 border-style: solid;
 border-width: 1px;
@@ -117,8 +116,7 @@ border-color: #BCB0A4;
 .cclista{width: 6px; height: 20px; background-image:url('clista.png');}
 .cclistab{background-image:url('clistab.png');}
 .cclistb{width: 6px; height: 20px; background-image:url('clistb.png');}
-.inclist
-{
+.inclist{
 background-color: #FFFFFF;
 font-family: verdana, sans-serif; 
 color: #262626;
@@ -130,8 +128,49 @@ scrollbar-darkshadow-color: #81756A;
 scrollbar-track-color: #E6E0DB;
 scrollbar-arrow-color: #404135;
 }
-.inselectedclist
-{
+.inselectedclist{
+color: #FFFFFF;
 background-color: #8AA7BA;
-border-style: solid;
 }
+
+table.menubar{
+background-color: #E6E0DB;
+border-style: solid;
+border-width: 1px;
+border-color: #D6CEC6;
+}
+td.itembar{
+color: #262626;
+border-style: solid;
+border-width: 1px;
+border-color: #E6E0DB;
+}
+td.itembarOn{
+color: #FFFFFF;
+border-style: solid;
+border-width: 1px;
+border-color: #C8BDB3;
+background-color: #8AA7BA;
+}
+
+table.menu{
+border-style: solid;
+border-width: 1px;
+border-color: #C8BDB3;
+background-color: #FFFFFF;
+}
+td.item{
+color: #262626;
+border-style: solid;
+border-width: 1px;
+border-color: #FFFFFF;
+}
+td.itemOn{
+color: #FFFFFF;
+border-style: solid;
+border-width: 1px;
+border-color: #C8BDB3;
+background-color: #8AA7BA;
+}
+td.itemBetween{ height:1px; background-color: #C8BDB3; }
+

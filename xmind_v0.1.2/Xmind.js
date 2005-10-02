@@ -11,6 +11,10 @@ var defaultvar=Array();
 var defaultonload;
 var timeOutPage=0;
 var timeOutTime=0;
+var MenuOpened=0;
+var MenulastOpenedChild=0;
+var MenuOpenedC=0;
+var noDocumentClic=0;
 
 
 function SetDefaultValues()
@@ -20,7 +24,13 @@ function SetDefaultValues()
   if(defaultvar[i]) document.getElementById(defaultname[i]).value=defaultvar[i];
   else document.getElementById(defaultname[i]).value='';
  }
- if(defaultonload) eval(defaultonload);
+ if(defaultonload) activeScript(defaultonload);
+}
+
+function DocumentClick()
+{
+ if(!noDocumentClic) closeLastMenu();
+ noDocumentClic=0;
 }
 
 
@@ -229,3 +239,103 @@ function NoteBookOnclick(nb,page)
 
  }
 }
+
+
+
+function traceTitreMenu(td,menu)
+{
+ closeLastMenu();
+ if(a=document.getElementById(menu))
+ {
+  td.className="itembarOn";
+  MenuOpened=Array(td,0);
+ }
+}
+function closeLastTitreMenu()
+{
+ if(!MenuOpened[1]) closeLastMenu();
+}
+function traceMenu(td,menu)
+{
+ noDocumentClic=1;
+ closeLastMenu();
+
+ if(a=document.getElementById(menu))
+ {
+  var pos=getXY(td);
+  td.className="itembarOn";
+  a.style.left=pos.x;
+  a.style.top=pos.y+21;
+  a.style.visibility="visible";
+  MenuOpened=Array(td,a);
+ }
+}
+function closeLastMenu()
+{
+  if(MenuOpened)
+  {
+    MenuOpened[0].className="itembar";
+    if(MenuOpened[1])
+    {
+     MenuOpened[1].style.visibility="hidden";
+     closeChilds();
+    }
+  }
+  MenuOpened=0;
+}
+function getXY(myIMG)
+{
+ var posi = { x:0, y:0 };
+ do
+ {
+  posi.x+=parseInt(myIMG.offsetLeft);
+  posi.y+=parseInt(myIMG.offsetTop);
+  myIMG=myIMG.offsetParent;
+ } while(myIMG);
+ return posi;
+}
+
+function traceItem(td)
+{
+ td.className="itemOn";
+ var child=td.getAttribute("child");
+ if(child)
+ {
+   traceMenuChild(td,child);
+   MenulastOpenedChild=child;
+ }
+}
+function untraceItem(td){ td.className="item"; }
+
+
+function traceMenuChild(td,menu)
+{
+ if(a=document.getElementById(menu))
+ {
+  var pos=getXY(td);
+  closeItemChilds(pos.x+td.offsetWidth-3);
+  a.style.left=pos.x+td.offsetWidth-2;
+  a.style.top=pos.y;
+  a.style.visibility="visible";
+  if(!MenuOpenedC) MenuOpenedC=Array();
+  MenuOpenedC.push(a);
+ }
+}
+function closeChilds()
+{
+ if(MenulastOpenedChild)
+ {
+  for(i=0; i!=MenuOpenedC.length; i++) MenuOpenedC[i].style.visibility="hidden";
+  MenuOpenedC=0;
+  MenulastOpenedChild=0;
+ }
+}
+function closeItemChilds(repere)
+{
+ if(MenulastOpenedChild) for(i=0; i<MenuOpenedC.length; i++)
+ {
+  test=MenuOpenedC[i].style.left.replace('px','');
+  if(test>repere) MenuOpenedC[i].style.visibility="hidden";
+ }
+}
+

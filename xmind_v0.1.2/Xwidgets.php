@@ -109,7 +109,7 @@ function XmindEntry($theme, $name, $type='text', $size=135, $default='', $active
   $no='no';
  }
 
- return('<table style="text-align: left; height: 2px;" class="entry" border="0" cellpadding="0" cellspacing="0">
+ return('<table style="text-align: left; height: 2px;" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td class="entrya"></td>
       <td class="entryab"><input type="'.$type.'" id="'.$name.'" name="'.$name.'" value="'.$default.'" '.$disablet.' class="entry'.$no.'"'.$onblur.$onchange.' style="width:'.$size.';"></td>

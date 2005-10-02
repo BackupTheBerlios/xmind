@@ -29,6 +29,7 @@
 
  ** Xmind parse functions **
 
+ XmindSetPath(dir $path)
  string XmindOpenFile(file $file)
  string XmindParseFile(file $file)
  string XmindParse(string $string)
@@ -49,7 +50,7 @@
  // situe l'emlacement du répertoire Xmind
  function XmindSetPath($path)
  {
-  global $Xpath;
+ global $Xpath;
   if(!file_exists($path.'/Xmind/Xmind.php'))  die("Xmind error : Impossible de situer le répertoire Xmind sur $path .");
   if($path{strlen($path)-1}!='/') $path.='/';
   $Xpath=$path;
@@ -59,8 +60,8 @@
  // retourne le contenu d'un fichier
  function XmindOpenFile($file)
  {
-   if (!($fp = fopen($file, "r"))) die("Xmind error : Impossible d'ouvrir le fichier $file");
-   return(fread($fp, filesize($file)));
+  if (!($fp = fopen($file, "r"))) die("Xmind error : Impossible d'ouvrir le fichier $file");
+  return(fread($fp, filesize($file)));
  }
 
 
@@ -68,8 +69,8 @@
  // retourne l'html à afficher
  function XmindParseFile($file)
  {
-   if (!($fp = fopen($file, "r"))) die("Xmind error : Impossible d'ouvrir le fichier $file");
-   return(XmindParse(fread($fp, filesize($file))));
+  if (!($fp = fopen($file, "r"))) die("Xmind error : Impossible d'ouvrir le fichier $file");
+  return(XmindParse(fread($fp, filesize($file))));
  }
 
 
@@ -78,27 +79,27 @@
  // retourne l'html a afficher
  function XmindParse($string)
  {
-   global $Xstring, $Xn;
-   $Xstring="";
+  global $Xstring, $Xn;
+  $Xstring="";
 
-   $string=str_replace("\r", '', $string);
-   $string=str_replace("\n", '', $string);
+  $string=str_replace("\r", '', $string);
+  $string=str_replace("\n", '', $string);
    
-   $xml_parser = xml_parser_create();
-   xml_set_character_data_handler($xml_parser,'XMLparseHandler');
-   xml_set_element_handler($xml_parser,'XMLparseDebutElement','XMLparseFinElement');
-   if (!xml_parse($xml_parser, $string)) die('Xmind error : Des erreurs XML sont signalée par le parser !') ;
-   xml_parser_free($xml_parser);
+  $xml_parser=xml_parser_create();
+  xml_set_character_data_handler($xml_parser,'XMLparseHandler');
+  xml_set_element_handler($xml_parser,'XMLparseDebutElement','XMLparseFinElement');
+  if (!xml_parse($xml_parser, $string)) die('Xmind error : Des erreurs XML sont signalée par le parser !') ;
+  xml_parser_free($xml_parser);
 
 
-   return($Xstring);
+  return($Xstring);
  }
 
 
 // utilisé par Xmindparse
 function XMLParseDebutElement($parser, $name, $attrs)
 {
- global $Xstring,$Xpath,$Xoptions,$Xtheme,$Xlasttag,$XlastName,
+ global $Xstring,$Xstring2,$Xpath,$Xoptions,$Xtheme,$Xlasttag,$XlastName,
  $Xn,$Yn,$Xbox,$Xtemp,$lastNB,$Xintegration;
 
  $Xoptions=array();
@@ -111,10 +112,10 @@ function XMLParseDebutElement($parser, $name, $attrs)
   $Xn[XMIND]++;
   if($Xoptions[THEME]) $Xtheme=$Xoptions[THEME]; else $Xtheme='default'; // theme par default
   $Xintegration=$Xoptions[INTEGRATIONTYPE];
-  if($Xoptions[ONLOAD]) $Xoption[ONLOAD]='defaultonload="'.str_replace("'", "\\'", $Xoptions[ONLOAD]).'";';
-  if(!file_exists($Xpath.'Xmind/themes/'.$Xtheme)) die('Xmind error : le theme spécifié est introuvale !');
+  if($Xoptions[ONLOAD]) $Xoption[ONLOAD]='var defaultonload="'.str_replace("'", "\\'", $Xoptions[ONLOAD]).'";';
+  if(!file_exists($Xpath.'Xmind/themes/'.$Xtheme)) die('Xmind error : le theme ['.$Xtheme.'] est introuvale !');
   if($Xintegration!='plain') $Xstring.='<html><head><title>'.$Xoptions[TITLE].'</title></head><body leftmargin="'.$Xoptions[MARGE].'" topmargin="'.$Xoptions[MARGE].'" class="frame">';
-  if($Xn[XMIND]==1) $Xstring.='<script language="Javascript">var path="'.$Xpath.'"; var theme="'.$Xtheme.'"; '.$Xoption[ONLOAD].'</script> <script language="Javascript" src="'.$Xpath.'Xmind/Xmind.js"></script><style type="text/css">'.XmindStyle($Xpath,$Xtheme).'</style>
+  if($Xn[XMIND]==1)$Xstring.='<script language="Javascript">var path="'.$Xpath.'"; var theme="'.$Xtheme.'"; '.$Xoption[ONLOAD].'</script> <script language="Javascript" src="'.$Xpath.'Xmind/Xmind.js"></script><style type="text/css">'.XmindStyle($Xpath,$Xtheme).'</style>
   <div style="z-index: 0; position: absolute; visibility: hidden; left: 500px"><iframe name="Xaction" id="Xaction" height="100" width="100" style="display:none;"></iframe></div>
   <form method="POST" TARGET=""><input type="hidden" name="Xtheme" value="'.$Xtheme.'"><input type="hidden" name="Xpath" value="'.$Xpath.'">';
  }
@@ -123,25 +124,28 @@ function XMLParseDebutElement($parser, $name, $attrs)
  if($name=='HBOX'||$name=='VBOX')
  {
   if(!$Xoptions[SPAN]) $Xoptions[SPAN]=1;
-  $Xstring.='<table cellpadding="'.$Xoptions[SPAN].'" cellspacing="'.$Xoptions[SPAN].'" height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'"><tr><td align="center" valign="middle">';
+  if(!$Xoptions[WIDTH]) $Xoptions[WIDTH]='100%';
+  $Xstring.='<table cellpadding="0" cellspacing="'.$Xoptions[SPAN].'" height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'"><tr><td align="center" valign="middle">';
   $Xtemp[BOX][++$Xbox]=$name;
  }
  if($name=='TBOX')
  {
   if(!$Xoptions[SPAN]) $Xoptions[SPAN]=1;
-  $Xstring.='<table cellpadding="'.$Xoptions[SPAN].'" cellspacing="'.$Xoptions[SPAN].'" height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'">';
+  $Xstring.='<table cellpadding="0" cellspacing="'.$Xoptions[SPAN].'" height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'"  background="'.$Xoptions[BACKGROUND].'">';
  }
  if($name=='TR')$Xstring.='<tr>';
  if($name=='TD')
  {
   if(!$Xoptions[VALIGN]) $Xoptions[VALIGN]='middle';
-  $Xstring.='<td height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" colspan="'.$Xoptions[COLSPAN].'" rowspan="'.$Xoptions[ROWSPAN].'" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'">';
+  $Xstring.='<td height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" colspan="'.$Xoptions[COLSPAN].'" rowspan="'.$Xoptions[ROWSPAN].'" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'" background="'.$Xoptions[BACKGROUND].'">';
  }
  if($name=='LAYER') $Xstring.='<div name="'.$Xoptions[NAME].'" style="z-index: '.$Xoptions[Z].'; position: absolute; left:'.$Xoptions[X].'px; top:'.$Xoptions[Y].'px; width:'.$Xoptions[WIDTH].'px; height:'.$Xoptions[HEIGHT].'px" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'">';
  if($name=='FRAME')
  {
+  if(!$Xoptions[VALIGN]) $Xoptions[VALIGN]='top';
   if(!$Xoptions[TALIGN]) $Xoptions[TALIGN]='left';
   if($Xoptions[TITLE]) $Xoptions[TITLE]='<span class="frame">&nbsp;'.$Xoptions[TITLE].'&nbsp;</span>';
+  else $Xoptions[TITLE]='&nbsp;<br>';
   $Xstring.='<table height="'.$Xoptions[HEIGHT].'" width="'.$Xoptions[WIDTH].'" cellpadding="0" cellspacing="0" class="frame"><tr><td class="framea"></td><td class="frameab" align="'.$Xoptions[TALIGN].'">'.$Xoptions[TITLE].'</td><td class="frameb"></td></tr>';
   $Xstring.='<tr><td class="frameac"></td><td class="frame"><table cellpadding="'.$Xoptions[MARGE].'" cellspacing="'.$Xoptions[MARGE].'" height="100%" width="100%"><tr><td height="100%" width="100%" align="'.$Xoptions[ALIGN].'" valign="'.$Xoptions[VALIGN].'">';
  }
@@ -204,6 +208,30 @@ function XMLParseDebutElement($parser, $name, $attrs)
   $Xstring.='</tr>';
 
  }
+ if($name=='MENUBAR')
+ {
+   $Xn[MENUBAR]++;
+   $Xtemp[menubar]=1;
+   if(!$Xoptions[NAME]) $Xoptions[NAME]='menubar'.$Xn[MENUBAR];
+   $Xstring.='<table id="'.$Xoptions[NAME].'" cellpadding="1" cellspacing="1" width="'.$Xoptions[WIDTH].'" class="menubar"><tr>';
+   $tab=explode(',',$Xoptions[TITLES]);
+   $i=0;
+   if($tab) foreach($tab as $t)
+   {
+    $menu='menu'.$Xn[MENUBAR].'_'.($Xn[MENU]+$i+1);
+    $Xstring.='<td width="1%" height="21" onclick="traceMenu(this,\''.$menu.'\')" onmouseover="traceTitreMenu(this,\''.$menu.'\')"  onmouseout="closeLastTitreMenu()" class="itembar">&nbsp;&nbsp;'.trim($t).'&nbsp;&nbsp;</td>';
+    $i++;
+   }
+   $Xstring.='<td></td></tr></table>'.XmindBetweenBox($Xtemp,$Xbox);
+
+ }
+ if($name=='MENU')
+ {
+  $Xn[MENU]++;
+  if(!$Xoptions[NAME]||$Xtemp[menubar]) $Xoptions[NAME]='menu'.$Xn[MENUBAR].'_'.$Xn[MENU];
+  $Xstring2.='<div id="'.$Xoptions[NAME].'" style="z-index: 0; position: absolute; top:10px; left:10px; visibility: hidden;"><table cellpadding="0" cellspacing="0" class="menu">';
+ }
+
 
 
 }
@@ -223,7 +251,7 @@ function XMLparseHandler($parser, $data)
 // utilisé par Xmindparse
 function XMLparseFinElement($parser, $name)
 {
- global $Xstring, $Xpath, $Xoptions, $Xtheme, $Xlasthandler, $defaultVars,
+ global $Xstring,$Xstring2,$Xpath,$Xoptions,$Xtheme,$Xlasthandler,$defaultVars,
  $Xlasttag,$XlastName,$Xtemp,$Xn,$Yn,$Xbox,$Xintegration,$Xcode;
 
  if($name=='SCRIPT') $Xstring.=$Xlasthandler.'</script>';
@@ -316,15 +344,28 @@ function XMLparseFinElement($parser, $name)
   }
 
  }
+ 
+ if($name=='MENUBAR') $Xtemp[menubar]='';
+ if($name=='MENU') $Xstring2.='</table></div>';
+ if($name=='ITEM')
+ {
+  $Xn[ITEM]++;
+  if(!$Xoptions[NAME]) $Xoptions[NAME]='item'.$Xn[ITEM];
+  if($Xoptions[CHILD]) $img='<img src="'.$Xpath.'Xmind/themes/'.$Xtheme.'/arrowmenu.png">';
+  if($a=trim($Xlasthandler)) $Xstring2.='<tr><td valign="middle" class="item" onmouseover="traceItem(this)" onmouseout="untraceItem(this)" onclick="'.$Xoptions[ONCLICK].'" child="'.$Xoptions[CHILD].'"><table width="100%" cellpadding="1" cellspacing="1"><tr><td>&nbsp;'.$a.'&nbsp;&nbsp;</td><td width="5" valign="middle">'.$img.'</td></tr></table></td></tr>';
+  else $Xstring2.='<tr><td height="1" class="itemBetween"></td></tr>';
+ }
+
 
  if($name=='XMIND')
  {
+  $Xstring.=$Xstring2;
   if($Xn[XMIND]==1)
   {
    $Xstring.='</form><div style="position: absolute; visibility: hidden; display:none;"><table><tr>';
    $tab=array('togglea','toggleb','toggleab','toggleaOn','togglebOn','toggleabOn','buttonaOn','buttonbOn','buttoncOn','buttondOn','buttonabOn','buttonacOn','buttonbdOn','buttoncdOn','buttonabcdOn','spinbutton1On','spinbutton2On');
    foreach($tab as $t) $Xstring.='<td class="'.$t.'">  </td>';
-   $Xstring.='</tr></table></div><script language="Javascript">window.onload=new Function("SetDefaultValues()");</script>';
+   $Xstring.='</tr></table></div><script language="Javascript">window.onload=new Function("SetDefaultValues()"); document.onclick=DocumentClick;</script>';
   }
   if($Xintegration!='plain') $Xstring.='</body></html>';
  }
